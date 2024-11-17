@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Question {
+  id              Int       @id @default(autoincrement()) // Primary key
+  title           String    // Question title
+  content         String    // LaTeX formatted question content
+  solution        String    // LaTeX formatted solution content
+  examBoard       String    // Exam board (e.g., CAIE)
+  syllabusCode    String    // Syllabus code (e.g., 9709)
+  yearOfExam      Int       // Year of the exam
+  session         String    // Session (e.g., June)
+  paperNumber     String    // Paper number (e.g., Paper 1)
+  questionNumber  Int       // Question number
+  questionType    String    // Question type (e.g., Structured Question)
+  mathTopic       String    // Math topic (e.g., Algebra)
+  difficulty      String?   // Difficulty level (optional)
+  topicsCovered   String[]  // Array of knowledge points or tags
+  marksAllocation Json      // JSON for marks allocation
+  imageUrls       String[]  // Array of image URLs
+  createdAt       DateTime  @default(now())               // Creation timestamp
+  updatedAt       DateTime  @updatedAt                   // Update timestamp
+
+  @@index([title]) // Index on title for efficient searching
+  @@index([difficulty]) // Index on difficulty for filtering
+  @@index([examBoard, syllabusCode, yearOfExam, paperNumber, questionNumber]) // Composite index for exam metadata
+}
